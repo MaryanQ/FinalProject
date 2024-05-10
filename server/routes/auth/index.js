@@ -1,4 +1,13 @@
 import { Router } from "express";
+import authController from "../../controllers/authController.js";
+
+const authRouter = Router();
+
+authRouter.post("/", authController.loginUser);
+
+export default authRouter; // Exporting the router
+
+/*import { Router } from "express";
 import dbConfig from "../../../db-connect.js";
 import jwt from "jsonwebtoken";
 
@@ -37,3 +46,4 @@ authRouter.get("/logout", (req, res) => {
 });
 
 export default authRouter;
+*/

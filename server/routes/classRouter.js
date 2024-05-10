@@ -1,4 +1,24 @@
 import { Router } from "express";
+
+import {
+  getAllClassesController,
+  getClassByIdController,
+  createClassController,
+  updateClassController,
+  deleteClassController,
+} from "../controllers/classController.js";
+
+const classesRouter = Router();
+
+classesRouter.get("/", getAllClassesController);
+classesRouter.get("/:id", getClassByIdController);
+classesRouter.post("/", createClassController);
+classesRouter.put("/:id", updateClassController);
+classesRouter.delete("/:id", deleteClassController);
+
+export default classesRouter;
+
+/*import { Router } from "express";
 import mysql from "mysql2";
 import dbConfig from "../../db-connect.js";
 
@@ -134,4 +154,4 @@ classesRouter.delete("/:id", (req, res) => {
     }
   );
 });
-export default classesRouter;
+export default classesRouter;*/

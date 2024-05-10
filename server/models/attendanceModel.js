@@ -1,5 +1,34 @@
 import dbConfig from "../../db-connect.js";
 
+export const getAllAttendance = (callback) => {
+  const query = "SELECT * FROM Attendance";
+  dbConfig.query(query, callback);
+};
+
+export const getAttendanceById = (id, callback) => {
+  const query = "SELECT * FROM Attendance WHERE attendance_id = ?";
+  dbConfig.query(query, [id], callback);
+};
+
+export const createAttendance = (attendance_date, is_present, callback) => {
+  const query =
+    "INSERT INTO Attendance (attendance_date, is_present) VALUES (?, ?)";
+  dbConfig.query(query, [attendance_date, is_present], callback);
+};
+
+export const updateAttendance = (id, attendance_date, is_present, callback) => {
+  const query =
+    "UPDATE Attendance SET attendance_date = ?, is_present = ? WHERE attendance_id = ?";
+  dbConfig.query(query, [attendance_date, is_present, id], callback);
+};
+
+export const deleteAttendance = (id, callback) => {
+  const query = "DELETE FROM Attendance WHERE attendance_id = ?";
+  dbConfig.query(query, [id], callback);
+};
+
+/*import dbConfig from "../../db-connect.js";
+
 const Attendance = {
   getAll: (result) => {
     dbConfig.query("SELECT * FROM Attendance", (err, res) => {
@@ -94,4 +123,4 @@ const Attendance = {
   },
 };
 
-export default Attendance;
+export default Attendance;*/

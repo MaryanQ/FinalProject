@@ -1,4 +1,32 @@
+// Import database configuration using `import`
 import dbConfig from "../../db-connect.js";
+
+export const getAllCourses = (callback) => {
+  const query = "SELECT * FROM Courses";
+  dbConfig.query(query, callback);
+};
+
+export const getCourseById = (id, callback) => {
+  const query = "SELECT * FROM Courses WHERE course_id = ?";
+  dbConfig.query(query, [id], callback);
+};
+
+export const createCourse = (course_name, callback) => {
+  const query = "INSERT INTO Courses (course_name) VALUES (?)";
+  dbConfig.query(query, [course_name], callback);
+};
+
+export const updateCourse = (id, course_name, callback) => {
+  const query = "UPDATE Courses SET course_name = ? WHERE course_id  = ?";
+  dbConfig.query(query, [course_name, id], callback);
+};
+
+export const deleteCourse = (id, callback) => {
+  const query = "DELETE FROM Courses WHERE course_id = ?";
+  dbConfig.query(query, [id], callback);
+};
+
+/*import dbConfig from "../../db-connect.js";
 
 const Course = {
   getAll: (result) => {
@@ -83,4 +111,4 @@ const Course = {
   },
 };
 
-export default Course;
+export default Course;*/

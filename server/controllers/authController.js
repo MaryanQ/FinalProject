@@ -1,38 +1,41 @@
+import { AuthModel } from "../models/authModel.js";
 import jwt from "jsonwebtoken";
 
-const loginUser = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+// Controller to handle authentication
+const authController = {
+  loginUser: (req, res) => {
+    const { email, password } = req.body;
 
-    if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    // Validate email and password
+    if (!email || !password) {
+      return res.status(400).json({ message: "Missing email or password" });
     }
 
-    const token = jwt.sign(
-      { userId: user.id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    // Call the model to verify user credentials
+    AuthModel.loginUser(email, password, (error, results) => {
+      if (error) {
+        console.error("Error during login query:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
 
-    res.json({ token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+      // Check if a user record was found
+      if (results.length > 0) {
+        // Use the first (or only) result found
+        const user = results[0];
+        const token = jwt.sign(
+          { email: user.email },
+          process.env.JWT_SECRET || "jwt_secret_key", // Store this securely
+          { expiresIn: "1d" }
+        );
+
+        return res.status(200).json({ token });
+      } else {
+        return res
+          .status(401)
+          .json({ message: "Unauthorized: Invalid credentials" });
+      }
+    });
+  },
 };
 
-const logoutUser = async (req, res) => {
-  try {
-    // Clear the token stored on the client side
-    res.clearCookie("token");
-
-    // Optionally, you can send a response indicating successful logout
-    res.status(200).json({ message: "Logout successful" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-export { loginUser, logoutUser };
+export default authController;

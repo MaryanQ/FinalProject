@@ -1,5 +1,26 @@
 import { Router } from "express";
 
+import {
+  getAllHomework,
+  getHomeworkById,
+  createHomework,
+  updateHomework,
+  deleteHomework,
+} from "../controllers/homeworkController.js";
+
+const homeworkRouter = Router();
+
+// Set up routes
+homeworkRouter.get("/", getAllHomework);
+homeworkRouter.get("/:id", getHomeworkById); // Ensure this matches the function name
+homeworkRouter.post("/", createHomework);
+homeworkRouter.put("/:id", updateHomework);
+homeworkRouter.delete("/:id", deleteHomework);
+
+export default homeworkRouter;
+
+/*import { Router } from "express";
+
 import dbConfig from "../../db-connect.js";
 
 const homeworkRouter = Router();
@@ -135,4 +156,4 @@ homeworkRouter.delete("/:id", (req, res) => {
   });
 });
 
-export default homeworkRouter;
+export default homeworkRouter;*/

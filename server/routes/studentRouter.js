@@ -1,9 +1,25 @@
 import { Router } from "express";
-import dbConfig from "../../db-connect.js";
+import {
+  getAllStudentsController,
+  getAllStudentsWithCoursesController,
+  getStudentByIdController,
+  createStudentController,
+  updateStudentController,
+  deleteStudentController,
+} from "../controllers/studentController.js"; // Adjust the path as needed
 
+// Create a new router instance
 const studentsRouter = Router();
 
-studentsRouter.get("/", (req, res) => {
+studentsRouter.get("/", getAllStudentsController);
+studentsRouter.get("/students/courses", getAllStudentsWithCoursesController);
+studentsRouter.get("/:id", getStudentByIdController);
+studentsRouter.post("/", createStudentController);
+studentsRouter.put("/:id", updateStudentController);
+studentsRouter.delete("/:id", deleteStudentController);
+export default studentsRouter;
+
+/*studentsRouter.get("/", (req, res) => {
   const { gender } = req.query;
   let queryString = "SELECT * FROM students";
 
@@ -141,4 +157,4 @@ studentsRouter.delete("/:id", async (req, res) => {
   }
 });
 
-export default studentsRouter;
+export default studentsRouter;*/

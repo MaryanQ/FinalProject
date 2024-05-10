@@ -1,4 +1,23 @@
 import { Router } from "express";
+
+import {
+  getAllCoursesController,
+  getCourseByIdController,
+  createCourseController,
+  updateCourseController,
+  deleteCourseController,
+} from "../controllers/courseController.js";
+const coursesRouter = Router();
+
+coursesRouter.get("/", getAllCoursesController);
+coursesRouter.get("/:id", getCourseByIdController);
+coursesRouter.post("/", createCourseController);
+coursesRouter.put("/:id", updateCourseController);
+coursesRouter.delete("/:id", deleteCourseController);
+
+export default coursesRouter;
+
+/*import { Router } from "express";
 import dbConfig from "../../db-connect.js";
 
 const coursesRouter = Router();
@@ -92,4 +111,4 @@ coursesRouter.delete("/:id", (req, res) => {
     }
   );
 });
-export default coursesRouter;
+export default coursesRouter;*/

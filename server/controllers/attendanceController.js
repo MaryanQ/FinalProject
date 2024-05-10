@@ -1,4 +1,128 @@
-import dbConfig from "../../db-connect.js";
+import {
+  getAllAttendance as modelGetAllAttendance,
+  getAttendanceById as modelGetAttendanceById,
+  createAttendance as modelCreateAttendance,
+  updateAttendance as modelUpdateAttendance,
+  deleteAttendance as modelDeleteAttendance,
+} from "../models/attendanceModel.js";
+
+import { formatToYYYYMMDD } from "../utils/dateUtils.js";
+
+const getAllAttendanceController = (req, res) => {
+  // Fetch all attendance records
+  modelGetAllAttendance((error, results) => {
+    if (error) {
+      console.error("Error in getAllAttendanceController:", error);
+      return res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
+    }
+
+    // Map over results to format each attendance date
+    const formattedResults = results.map((record) => {
+      // Convert attendance_date to DD/MM/YYYY format
+      const formattedDate = formatToYYYYMMDD(record.attendance_date);
+      return {
+        ...record,
+        attendance_date: formattedDate, // Replace with the formatted date
+      };
+    });
+
+    // Send back the modified results with formatted dates
+    res.json(formattedResults);
+  });
+};
+
+const getAttendanceByIdController = (req, res) => {
+  const { id } = req.params;
+
+  // Fetch a single attendance record by ID
+  modelGetAttendanceById(id, (error, result) => {
+    if (error) {
+      console.error("Error in getAttendanceByIdController:", error);
+      return res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
+    } else if (result.length === 0) {
+      return res.status(404).json({ message: "Attendance not found" });
+    }
+
+    // Extract the single record and format the date
+    const record = result[0];
+    const formattedDate = formatToYYYYMMDD(record.attendance_date);
+
+    // Return the formatted record
+    res.json({
+      ...record,
+      attendance_date: formattedDate, // Replace the original date with the formatted date
+    });
+  });
+};
+
+const createAttendanceController = (req, res) => {
+  let { attendance_date, is_present } = req.body;
+  // Use the YYYY-MM-DD format required by MySQL
+  attendance_date = formatToYYYYMMDD(attendance_date);
+
+  modelCreateAttendance(attendance_date, is_present, (error, result) => {
+    if (error) {
+      // Log the error for debugging purposes
+      console.error("Error in createAttendanceController:", error);
+      return res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
+    }
+    res.status(201).json({
+      message: "Attendance created successfully",
+      attendanceId: result.insertId,
+    });
+  });
+};
+
+const updateAttendanceController = (req, res) => {
+  const { id } = req.params;
+  let { attendance_date, is_present } = req.body; // Use `let` instead of `const`
+
+  // Ensure the attendance_date is formatted to YYYY-MM-DD (required by MySQL)
+  const formattedDate = formatToYYYYMMDD(attendance_date);
+
+  // Update the attendance record
+  modelUpdateAttendance(id, formattedDate, is_present, (error, result) => {
+    if (error) {
+      console.error("Error in updateAttendanceController:", error);
+      return res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
+    } else if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Attendance not found" });
+    }
+
+    // Return success message after updating
+    res.json({ message: "Attendance updated successfully" });
+  });
+};
+
+const deleteAttendanceController = (req, res) => {
+  const { id } = req.params;
+  modelDeleteAttendance(id, (error, result) => {
+    if (error) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    } else if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Attendance not found" });
+    }
+    res.json({ message: "Attendance deleted successfully" });
+  });
+};
+
+export {
+  getAllAttendanceController,
+  getAttendanceByIdController,
+  createAttendanceController,
+  updateAttendanceController,
+  deleteAttendanceController,
+};
+
+/*import dbConfig from "../../db-connect.js";
 import Attendance from "../models/attendanceModel.js";
 
 const getAllAttendances = async (req, res) => {
@@ -115,3 +239,4 @@ export {
   updateAttendanceById,
   deleteAttendanceById,
 };
+*/

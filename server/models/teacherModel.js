@@ -1,6 +1,64 @@
 import dbConfig from "../../db-connect.js";
 
-const Teacher = {
+// Retrieve all teachers
+export const getAllTeachers = (callback) => {
+  const query = "SELECT * FROM Teachers";
+  dbConfig.query(query, callback);
+};
+
+// Retrieve a teacher by ID
+export const getTeacherById = (teacher_id, callback) => {
+  const query = "SELECT * FROM Teachers WHERE teacher_id = ?";
+  dbConfig.query(query, [teacher_id], callback);
+};
+
+// Create a new teacher
+export const createTeacher = (
+  firstname,
+  lastname,
+  email,
+  number,
+  title,
+  callback
+) => {
+  const query = `
+    INSERT INTO Teachers (firstname, lastname, email, number, title)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  dbConfig.query(query, [firstname, lastname, email, number, title], callback);
+};
+
+// Update an existing teacher
+export const updateTeacher = (
+  teacher_id,
+  firstname,
+  lastname,
+  email,
+  number,
+  title,
+  callback
+) => {
+  const query = `
+    UPDATE Teachers
+    SET firstname = ?, lastname = ?, email = ?, number = ?, title = ?
+    WHERE teacher_id = ?
+  `;
+  dbConfig.query(
+    query,
+    [firstname, lastname, email, number, title, teacher_id],
+    callback
+  );
+};
+
+// Delete a teacher
+export const deleteTeacher = (teacher_id, callback) => {
+  const query = "DELETE FROM Teachers WHERE teacher_id = ?";
+  dbConfig.query(query, [teacher_id], callback);
+};
+
+// Export all model functions
+
+/*const Teacher = {
   getAll: (result) => {
     dbConfig.query("SELECT * FROM Teachers", (err, res) => {
       if (err) {
@@ -82,4 +140,4 @@ const Teacher = {
   },
 };
 
-export default Teacher;
+export default Teacher;*/

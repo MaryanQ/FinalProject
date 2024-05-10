@@ -1,4 +1,23 @@
 import { Router } from "express";
+import {
+  getAllAttendanceController,
+  getAttendanceByIdController,
+  createAttendanceController,
+  updateAttendanceController,
+  deleteAttendanceController,
+} from "../controllers/attendanceController.js";
+
+const attendanceRouter = Router();
+
+attendanceRouter.get("/", getAllAttendanceController);
+attendanceRouter.get("/:id", getAttendanceByIdController);
+attendanceRouter.post("/", createAttendanceController);
+attendanceRouter.put("/:id", updateAttendanceController);
+attendanceRouter.delete("/:id", deleteAttendanceController);
+
+export default attendanceRouter;
+
+/*import { Router } from "express";
 import dbConfig from "../../db-connect.js";
 
 const attendanceRouter = Router();
@@ -117,4 +136,4 @@ attendanceRouter.delete("/:id", (req, res) => {
   });
 });
 
-export default attendanceRouter;
+export default attendanceRouter;*/

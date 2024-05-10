@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "build:digitalocean": "npm install && npm run test && npm prune --production",
     "test": "echo \"Implement actual tests and replace this placeholder.\""
   },
@@ -16,6 +16,7 @@
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-rate-limit": "^7.2.0",
@@ -30,7 +31,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.1.0"
   },
   "engines": {
     "node": ">=14.x"

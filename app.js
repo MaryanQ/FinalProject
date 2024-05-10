@@ -6,14 +6,16 @@ import cors from "cors";
 import helmet from "helmet";
 
 import authRouter from "./server/routes/auth/index.js";
-import studentsRouter from "./server/routes/students.js";
-import teachersRouter from "./server/routes/teachers.js";
-import attendanceRouter from "./server/routes/attendance.js";
-import homeworkRouter from "./server/routes/homework.js";
-import coursesRouter from "./server/routes/courses.js";
-import classesRouter from "./server/routes/classes.js";
+import studentRouter from "./server/routes/studentRouter.js";
+import teacherRouter from "./server/routes/teacherRouter.js";
+import homeworkRouter from "./server/routes/homeworkRouter.js";
 
-import { loginUser, logoutUser } from "./server/controllers/authController.js";
+import attendanceRouter from "./server/routes/attendanceRouter.js";
+//import homeworkRouter from "./server/routes/homework.js";
+import courseRouter from "./server/routes/courseRouter.js";
+import classRouter from "./server/routes/classRouter.js";
+
+/*import { loginUser, logoutUser } from "./server/controllers/authController.js";
 
 import {
   getAllAttendances,
@@ -45,28 +47,30 @@ import {
   updateTeacherById,
   deleteTeacherById,
 } from "./server/controllers/teachersController.js";
-
+*/
 const app = express();
-const port = 8080;
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(
-  cors({
-    origin: "https://proud-stone-0ef859703.5.azurestaticapps.net",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
+
+//({
+//origin: "https://proud-stone-0ef859703.5.azurestaticapps.net",
+//methods: ["GET", "POST", "PUT", "DELETE"],
+//credentials: true,
+//})
+//);
+//);
 app.use("/auth", authRouter);
-app.use("/students", studentsRouter);
-app.use("/teachers", teachersRouter);
+app.use("/students", studentRouter);
+app.use("/teachers", teacherRouter);
 app.use("/attendance", attendanceRouter);
 app.use("/homework", homeworkRouter);
-app.use("/courses", coursesRouter);
-app.use("/classes", classesRouter);
+app.use("/courses", courseRouter);
+app.use("/classes", classRouter);
 
+/*
 authRouter.post("/logout", logoutUser);
 authRouter.post("/login", loginUser);
 
@@ -96,6 +100,9 @@ attendanceRouter.get("/:id", getAttendanceById);
 attendanceRouter.post("/", createAttendance);
 attendanceRouter.put("/:id", updateAttendanceById);
 attendanceRouter.delete("/:id", deleteAttendanceById);
+*/
+
+const port = 4000;
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

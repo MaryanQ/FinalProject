@@ -1,4 +1,25 @@
 import { Router } from "express";
+import {
+  getAllTeachersController,
+  getTeacherByIdController,
+  createTeacherController,
+  updateTeacherController,
+  deleteTeacherController,
+} from "../controllers/teacherController.js"; // Adjust the path as needed
+
+const teacherRouter = Router();
+
+// Define routes for teacher operations
+teacherRouter.get("/", getAllTeachersController);
+teacherRouter.get("/:id", getTeacherByIdController);
+teacherRouter.post("/", createTeacherController);
+teacherRouter.put("/:id", updateTeacherController);
+teacherRouter.delete("/:id", deleteTeacherController);
+
+// Export the router
+export default teacherRouter;
+
+/*import { Router } from "express";
 import dbConfig from "../../db-connect.js";
 
 const teachersRouter = Router();
@@ -116,4 +137,4 @@ teachersRouter.delete("/:id", (req, res) => {
   });
 });
 
-export default teachersRouter;
+export default teachersRouter;*/
