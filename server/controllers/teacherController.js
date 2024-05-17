@@ -1,14 +1,14 @@
 import {
-  getAllTeachers as getAllTeachersModel,
-  getTeacherById as getTeacherByIdModel,
-  createTeacher as createTeacherModel,
-  updateTeacher as updateTeacherModel,
-  deleteTeacher as deleteTeacherModel,
+  getAllTeachers,
+  getTeacherById,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
 } from "../models/teacherModel.js";
 
 // Controller to fetch all teachers
-const getAllTeachersController = (req, res) => {
-  getAllTeachersModel((err, results) => {
+export const getAllTeachersController = (req, res) => {
+  getAllTeachers((err, results) => {
     if (err) {
       console.error("Error fetching all teachers:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -18,9 +18,9 @@ const getAllTeachersController = (req, res) => {
 };
 
 // Controller to fetch a teacher by ID
-const getTeacherByIdController = (req, res) => {
+export const getTeacherByIdController = (req, res) => {
   const teacher_id = req.params.id;
-  getTeacherByIdModel(teacher_id, (err, result) => {
+  getTeacherById(teacher_id, (err, result) => {
     if (err) {
       console.error("Error fetching teacher by ID:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -33,7 +33,7 @@ const getTeacherByIdController = (req, res) => {
 };
 
 // Controller to create a new teacher
-const createTeacherController = (req, res) => {
+export const createTeacherController = (req, res) => {
   const { firstname, lastname, email, number, title } = req.body;
 
   // Validate required fields
@@ -43,26 +43,19 @@ const createTeacherController = (req, res) => {
       .json({ message: "Firstname, lastname, and email are required" });
   }
 
-  createTeacherModel(
-    firstname,
-    lastname,
-    email,
-    number,
-    title,
-    (err, result) => {
-      if (err) {
-        console.error("Error creating teacher:", err);
-        return res.status(500).json({ message: "Internal Server Error" });
-      }
-      res
-        .status(201)
-        .json({ message: "Teacher created successfully", id: result.insertId });
+  createTeacher(firstname, lastname, email, number, title, (err, result) => {
+    if (err) {
+      console.error("Error creating teacher:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
-  );
+    res
+      .status(201)
+      .json({ message: "Teacher created successfully", id: result.insertId });
+  });
 };
 
 // Controller to update a teacher
-const updateTeacherController = (req, res) => {
+export const updateTeacherController = (req, res) => {
   const teacher_id = req.params.id;
   const { firstname, lastname, email, number, title } = req.body;
 
@@ -72,7 +65,7 @@ const updateTeacherController = (req, res) => {
       .json({ message: "Firstname, lastname, and email are required" });
   }
 
-  updateTeacherModel(
+  updateTeacher(
     teacher_id,
     firstname,
     lastname,
@@ -93,9 +86,9 @@ const updateTeacherController = (req, res) => {
 };
 
 // Controller to delete a teacher
-const deleteTeacherController = (req, res) => {
+export const deleteTeacherController = (req, res) => {
   const teacher_id = req.params.id;
-  deleteTeacherModel(teacher_id, (err, result) => {
+  deleteTeacher(teacher_id, (err, result) => {
     if (err) {
       console.error("Error deleting teacher:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -108,13 +101,6 @@ const deleteTeacherController = (req, res) => {
 };
 
 // Export all controllers
-export {
-  getAllTeachersController,
-  getTeacherByIdController,
-  createTeacherController,
-  updateTeacherController,
-  deleteTeacherController,
-};
 
 /*import Teacher from "../models/teachersModel.js";
 

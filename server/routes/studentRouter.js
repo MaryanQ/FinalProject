@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   getAllStudentsController,
-  getAllStudentsWithCoursesController,
   getStudentByIdController,
   createStudentController,
   updateStudentController,
@@ -12,7 +11,6 @@ import {
 const studentsRouter = Router();
 
 studentsRouter.get("/", getAllStudentsController);
-studentsRouter.get("/students/courses", getAllStudentsWithCoursesController);
 studentsRouter.get("/:id", getStudentByIdController);
 studentsRouter.post("/", createStudentController);
 studentsRouter.put("/:id", updateStudentController);

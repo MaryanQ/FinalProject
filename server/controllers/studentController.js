@@ -1,15 +1,14 @@
 import {
-  getAllStudents as modelGetAllStudents,
-  getStudentById as modelGetStudentById,
-  getAllStudentsWithCourses as modelGetAllStudentsWithCourses,
-  createStudent as modelCreateStudent,
-  updateStudent as modelUpdateStudent,
-  deleteStudent as modelDeleteStudent,
+  getAllStudents,
+  getStudentById,
+  createStudent,
+  updateStudent,
+  deleteStudent,
 } from "../models/studentsModel.js";
 
 // Controller to handle fetching all students
-const getAllStudentsController = (req, res) => {
-  modelGetAllStudents((err, results) => {
+export const getAllStudentsController = (req, res) => {
+  getAllStudents((err, results) => {
     if (err) {
       console.error("Error fetching all students:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -18,21 +17,10 @@ const getAllStudentsController = (req, res) => {
   });
 };
 
-// Controller to handle fetching all students with their courses
-const getAllStudentsWithCoursesController = (req, res) => {
-  modelGetAllStudentsWithCourses((err, results) => {
-    if (err) {
-      console.error("Error fetching students with courses:", err);
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
-    res.status(200).json(results);
-  });
-};
-
 // Controller to handle fetching a student by ID
-const getStudentByIdController = (req, res) => {
+export const getStudentByIdController = (req, res) => {
   const student_id = req.params.id;
-  modelGetStudentById(student_id, (err, result) => {
+  getStudentById(student_id, (err, result) => {
     if (err) {
       console.error("Error fetching student by ID:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -44,22 +32,22 @@ const getStudentByIdController = (req, res) => {
   });
 };
 // Controller to handle creating a new student
-const createStudentController = (req, res) => {
-  const { firstname, lastname, email, gender, number, course_name } = req.body;
+export const createStudentController = (req, res) => {
+  const { firstname, lastname, email, gender, number } = req.body;
 
   // Check for missing fields
-  if (!firstname || !lastname || !email || !gender || !number || !course_name) {
+  if (!firstname || !lastname || !email || !gender || !number) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   // Use the model function to create the student
-  modelCreateStudent(
+  createStudent(
     firstname,
     lastname,
     email,
     gender,
     number,
-    course_name,
+
     (err, result) => {
       if (err) {
         console.error("Error creating student:", err);
@@ -73,24 +61,24 @@ const createStudentController = (req, res) => {
 };
 
 // Controller to handle updating an existing student
-const updateStudentController = (req, res) => {
-  const id = req.params.id;
-  const { firstname, lastname, email, gender, number, course_name } = req.body;
+export const updateStudentController = (req, res) => {
+  const student_id = req.params.id;
+  const { firstname, lastname, email, gender, number } = req.body;
 
   // Check for missing fields
-  if (!firstname || !lastname || !email || !gender || !number || !course_name) {
+  if (!firstname || !lastname || !email || !gender || !number) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   // Use the model function to update the student
-  modelUpdateStudent(
-    id,
+  updateStudent(
+    student_id,
     firstname,
     lastname,
     email,
     gender,
     number,
-    course_name,
+
     (err, result) => {
       if (err) {
         console.error("Error updating student:", err);
@@ -105,9 +93,9 @@ const updateStudentController = (req, res) => {
 };
 
 // Controller to handle deleting a student
-const deleteStudentController = (req, res) => {
-  const id = req.params.id;
-  modelDeleteStudent(id, (err, result) => {
+export const deleteStudentController = (req, res) => {
+  const student_id = req.params.id;
+  deleteStudent(student_id, (err, result) => {
     if (err) {
       console.error("Error deleting student:", err);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -117,15 +105,6 @@ const deleteStudentController = (req, res) => {
     }
     res.status(200).json({ message: "Student deleted successfully" });
   });
-};
-
-export {
-  getAllStudentsController,
-  getAllStudentsWithCoursesController,
-  getStudentByIdController,
-  createStudentController,
-  updateStudentController,
-  deleteStudentController,
 };
 
 /*const getAllStudents = async (req, res) => {

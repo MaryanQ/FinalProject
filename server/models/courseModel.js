@@ -1,5 +1,6 @@
 // Import database configuration using `import`
 import dbConfig from "../../db-connect.js";
+import mysql from "mysql2";
 
 export const getAllCourses = (callback) => {
   const query = "SELECT * FROM Courses";
@@ -11,14 +12,15 @@ export const getCourseById = (id, callback) => {
   dbConfig.query(query, [id], callback);
 };
 
-export const createCourse = (course_name, callback) => {
-  const query = "INSERT INTO Courses (course_name) VALUES (?)";
-  dbConfig.query(query, [course_name], callback);
+export const createCourse = (course_name, duration, callback) => {
+  const query = "INSERT INTO Courses (course_name, duration) VALUES (?, ?)";
+  dbConfig.query(query, [course_name, duration], callback);
 };
 
-export const updateCourse = (id, course_name, callback) => {
-  const query = "UPDATE Courses SET course_name = ? WHERE course_id  = ?";
-  dbConfig.query(query, [course_name, id], callback);
+export const updateCourse = (id, course_name, duration, callback) => {
+  const query =
+    "UPDATE Courses SET course_name = ?, duration = ? WHERE course_id  = ?";
+  dbConfig.query(query, [course_name, duration, id], callback);
 };
 
 export const deleteCourse = (id, callback) => {

@@ -13,8 +13,8 @@ import homeworkRouter from "./server/routes/homeworkRouter.js";
 import attendanceRouter from "./server/routes/attendanceRouter.js";
 //import homeworkRouter from "./server/routes/homework.js";
 import courseRouter from "./server/routes/courseRouter.js";
-import classRouter from "./server/routes/classRouter.js";
-
+import courseStudentsRouter from "./server/routes/courseStudentsRouter.js";
+import courseTeacherRouter from "./server/routes/courseTeacherRouter.js";
 /*import { loginUser, logoutUser } from "./server/controllers/authController.js";
 
 import {
@@ -55,20 +55,22 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 
-//({
-//origin: "https://proud-stone-0ef859703.5.azurestaticapps.net",
-//methods: ["GET", "POST", "PUT", "DELETE"],
-//credentials: true,
-//})
-//);
-//);
+const corsOptions = {
+  origin: "http://localhost:5173", // Allow domains
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  credentials: true, // Allow credentials
+};
+
+app.use(cors(corsOptions));
+
 app.use("/auth", authRouter);
 app.use("/students", studentRouter);
 app.use("/teachers", teacherRouter);
 app.use("/attendance", attendanceRouter);
 app.use("/homework", homeworkRouter);
 app.use("/courses", courseRouter);
-app.use("/classes", classRouter);
+app.use("/courseStudents", courseStudentsRouter);
+app.use("/courseTeachers", courseTeacherRouter);
 
 /*
 authRouter.post("/logout", logoutUser);

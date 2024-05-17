@@ -1,15 +1,15 @@
 // Import functions from your courseModel.js file
 import {
-  getAllCourses as modelGetAllCourses,
-  getCourseById as modelGetCourseById,
-  createCourse as modelCreateCourse,
-  updateCourse as modelUpdateCourse,
-  deleteCourse as modelDeleteCourse,
+  getAllCourses,
+  getCourseById,
+  createCourse,
+  updateCourse,
+  deleteCourse,
 } from "../models/courseModel.js";
 
 // Controller function to get all courses
-const getAllCoursesController = (req, res) => {
-  modelGetAllCourses((err, results) => {
+export const getAllCoursesController = (req, res) => {
+  getAllCourses((err, results) => {
     if (err) {
       return res.status(500).json({ message: "Internal Server Error" });
     } else if (results.length === 0) {
@@ -20,9 +20,9 @@ const getAllCoursesController = (req, res) => {
 };
 
 // Controller function to get a course by ID
-const getCourseByIdController = (req, res) => {
+export const getCourseByIdController = (req, res) => {
   const id = req.params.id;
-  modelGetCourseById(id, (err, result) => {
+  getCourseById(id, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Internal Server Error" });
     } else if (result.length === 0) {
@@ -33,12 +33,12 @@ const getCourseByIdController = (req, res) => {
 };
 
 // Controller function to create a new course
-const createCourseController = (req, res) => {
-  const { course_name } = req.body;
-  if (!course_name) {
+export const createCourseController = (req, res) => {
+  const { course_name, duration } = req.body;
+  if (!course_name || !duration) {
     return res.status(400).json({ message: "Course name is required" });
   }
-  modelCreateCourse(course_name, (err, result) => {
+  createCourse(course_name, duration, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Internal Server Error" });
     }
@@ -47,13 +47,13 @@ const createCourseController = (req, res) => {
 };
 
 // Controller function to update a course
-const updateCourseController = (req, res) => {
+export const updateCourseController = (req, res) => {
   const { id } = req.params;
-  const { course_name } = req.body;
-  if (!course_name) {
+  const { course_name, duration } = req.body;
+  if (!course_name || !duration) {
     return res.status(400).json({ message: "Course name is required" });
   }
-  modelUpdateCourse(id, course_name, (err, result) => {
+  updateCourse(id, course_name, duration, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Internal Server Error" });
     } else if (result.affectedRows === 0) {
@@ -64,9 +64,9 @@ const updateCourseController = (req, res) => {
 };
 
 // Controller function to delete a course
-const deleteCourseController = (req, res) => {
+export const deleteCourseController = (req, res) => {
   const { id } = req.params;
-  modelDeleteCourse(id, (err, result) => {
+  deleteCourse(id, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Internal Server Error" });
     } else if (result.affectedRows === 0) {
@@ -77,13 +77,6 @@ const deleteCourseController = (req, res) => {
 };
 
 // Export all controller functions
-export {
-  getAllCoursesController,
-  getCourseByIdController,
-  createCourseController,
-  updateCourseController,
-  deleteCourseController,
-};
 
 /*import Course from "../models/coursesModel.js";
 

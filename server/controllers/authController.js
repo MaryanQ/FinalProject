@@ -1,8 +1,8 @@
-import { AuthModel } from "../models/authModel.js";
+import AuthModel from "../models/authModel.js";
 import jwt from "jsonwebtoken";
 
 // Controller to handle authentication
-const authController = {
+export const authController = {
   loginUser: (req, res) => {
     const { email, password } = req.body;
 
@@ -37,5 +37,3 @@ const authController = {
     });
   },
 };
-
-export default authController;
